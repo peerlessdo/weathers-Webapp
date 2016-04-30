@@ -237,6 +237,7 @@ function showDetailTwo(){
 
 
 function showDetailThree(){
+	$("#pcpn span").html(_strCity["HeWeather data service 3.0"][0]["now"]["pcpn"]);
 	var hourly_forecast = _strCity["HeWeather data service 3.0"][0]["hourly_forecast"];
 	var trCon1 = "<td>时间</td>";
 	var trCon2 = "<td>降水概率</td>";
