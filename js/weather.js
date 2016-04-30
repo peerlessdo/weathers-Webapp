@@ -1,5 +1,6 @@
 
-var urlCity = "https://api.heweather.com/x3/weather?city=wuhan&key=ead00e8e8c2540c9a87af54bb35002cf";
+
+var urlCity = "https://api.heweather.com/x3/weather?city=wuhan&key=ead00e8e8c2540c9a87af54bb35002cf";;
 var _strCity = {};
 
 /*页面一*/
@@ -273,28 +274,38 @@ function showDetailThree(){
 }
 
 function getLoc(){
-	var geolocation = new BMap.Geolocation();
-	geolocation.getCurrentPosition(function(position){
-		if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-			var geoc = new BMap.Geocoder();
-			geoc.getLocation(position.point, function(rs){	////getLocation函数用来解析地址信息，分别返回省市区街等
-				var addComp = rs.addressComponents,
-		        	province = addComp.province,	//获取省份
-		        	city = addComp.city,			//获取城市
-		        	district = addComp.district,	//区
-		        	street = addComp.street,		//街
-		        	streetNumber = addComp.streetNumber;
-		        //alert(province + city + district + street + streetNumber);
-		        $("#position_p span").html(province + city + district + street + streetNumber);
-			});
-		}
-		else {
-			alert('failed'+this.getStatus());
-		} 
-	},
-	{
-		enableHighAccuracy : true,	//告诉浏览器是否启用高精度设备GPS,WIFI,IP
-		maximumAge : 30000,			//告诉设备缓存时间
-		timeout : 10000				//超时事件，错误码指向TIMEOUT
-	})
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(
+			function(position){
+				var lon = position.coords.longitude;	//经度
+				var lat = position.coords.latitude;		//纬度
+				//alert("经度："+lon+"纬度："+lat);
+				var point = new BMap.Point(lon, lat);
+				var geoc = new BMap.Geocoder();
+				geoc.getLocation(point, function(rs){	//getLocation函数用来解析地址信息，分别返回省市区街等
+					var addComp = rs.addressComponents;
+	                var province = addComp.province;//获取省份
+	                var city = addComp.city;//获取城市
+	                var district = addComp.district;//区
+	                var street = addComp.street;//街
+	                $("#position_p span").html(province + city + district + street);
+				})
+			},
+			function(err){
+				switch (err.code){
+					case err.TIMEOUT: alert("链接超时，请重试！"); break;
+					case err.PERMISSION_DENIED: alert("您拒绝了使用位置共享服务，查询已取消。"); break;
+					case err.POSITION_UNAVAILABLE: alert("未能找到您的位置，请重试！"); break;
+				}
+			},
+			{
+				enableHighAccuracy : true,	//告诉浏览器是否启用高精度设备GPS,WIFI,IP
+				maximumAge : 30000,			//告诉设备缓存时间
+				timeout : 10000				//超时事件，错误码指向TIMEOUT
+			}
+		);
+	}
+	else{
+		alert("您的浏览器不支持地理定位...");
+	}
 }
