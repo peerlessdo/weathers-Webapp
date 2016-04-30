@@ -1,6 +1,6 @@
 
 
-var urlCity = "https://api.heweather.com/x3/weather?city=wuhan&key=ead00e8e8c2540c9a87af54bb35002cf";;
+var urlCity = "https://api.heweather.com/x3/weather?city=wuhan&key=ead00e8e8c2540c9a87af54bb35002cf";
 var _strCity = {};
 
 /*页面一*/
@@ -88,6 +88,18 @@ $(document).on('pagebeforeshow', '#page4', function(){
 			};
 		}
 	});
+
+	var cityList = document.getElementById("cityList");
+	var aList = cityList.getElementsByTagName("li");
+	//alert(aList.length);
+	for (var i = 1; i < aList.length; i++) {
+		aList[i].onclick=function(){
+			//alert($(this).text());
+			urlCity = "https://api.heweather.com/x3/weather?city=" + $(this).text() + "&key=ead00e8e8c2540c9a87af54bb35002cf";
+			//alert(urlCity);
+		};
+	}
+
 });
 
 function ajax(num, url){
@@ -179,17 +191,6 @@ function showDetailOne(){
 
 function showDetailTwo(){
 
-/*	_date = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["date"].substring(5);
-	_code_d = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["cond"]["code_d"];
-	_code_n = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["cond"]["code_n"];
-	_max = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["tmp"]["max"];
-	_min = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["tmp"]["min"];
-	_txt_d = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["cond"]["txt_d"];
-	_txt_n = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["cond"]["txt_n"];
-	_sr = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["astro"]["sr"];
-	_ss = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["astro"]["ss"];
-	_dir = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["wind"]["dir"];
-	_sc = _strCity["HeWeather data service 3.0"][0]["daily_forecast"][0]["wind"]["sc"];*/
 	var a = document.getElementsByClassName("collap-title-left");
 	for (var i = 2; i < a.length; i++) {
 		a[i].innerHTML=_strCity["HeWeather data service 3.0"][0]["daily_forecast"][i]["date"].substring(5);
