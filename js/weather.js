@@ -291,7 +291,16 @@ function getLoc(){
 				})*/
 			},
 			function(err){
-				alert(err.message);
+				switch (err.code){
+					case err.TIMEOUT: alert("链接超时，请重试！"); break;
+					case err.PERMISSION_DENIED: alert("您拒绝了使用位置共享服务，查询已取消。"); break;
+					case err.POSITION_UNAVAILABLE: alert("未能找到您的位置，请重试！"); break;
+				}
+			},
+			{
+				enableHighAccuracy : true,	//告诉浏览器是否启用高精度设备GPS,WIFI,IP
+				maximumAge : 30000,			//告诉设备缓存时间
+				timeout : 10000				//超时事件，错误码指向TIMEOUT
 			}
 		);
 	}
